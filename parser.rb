@@ -9,8 +9,10 @@ TOKEN = '5105333952:AAEkU-w1r3iNKpgH78qjuxF2Z0DQcqYf2A4'
 def call
   adverts = Array.new
 
+  a = adverts_listings3.css('p').text.chomp.delete("\n").split('.')
+  adverts << a if a.size > 1
+
   adverts_listings2.each do |adverts_listing|
-    # advert =  Array.new
     advert = adverts_listing.css('p').text.chomp.delete("\n").split('#')
     advert.each do |i|
       advert.delete(i) if i.size < 5 || i.size > 30
@@ -18,8 +20,8 @@ def call
     adverts << advert
   end
 
-  a = adverts_listings1.css('p').text.chomp.delete("\n").split('.')
-  adverts <<  a if a.size > 1
+  b = adverts_listings1.css('p').text.chomp.delete("\n").split('.')
+  adverts << b if b.size > 1
 
   adverts_listings.each do |adverts_listing|
     advert = adverts_listing.css('p').text.chomp.delete("\n").split('***') # title
@@ -31,16 +33,9 @@ def call
   adverts
 end
 
-def url
-  'https://maximum.fm/citati-pro-lyubov-50-krilatih-fraz-i-visloviv-velikih-lyudej-pro-lyubov_n193027'
-end
-
-def unparsed_page
-  HTTParty.get(url)
-end
-
 def parsed_page
-  Nokogiri::HTML(unparsed_page.body)
+  link = 'https://maximum.fm/citati-pro-lyubov-50-krilatih-fraz-i-visloviv-velikih-lyudej-pro-lyubov_n193027'
+  Nokogiri::HTML(HTTParty.get(link).body)
 end
 
 def adverts_listings
@@ -52,7 +47,6 @@ def parsed_page1
   Nokogiri::HTML(HTTParty.get(link).body)
 end
 
-
 def adverts_listings1
   parsed_page1.css('div.c')
 end
@@ -62,11 +56,18 @@ def parsed_page2
   Nokogiri::HTML(HTTParty.get(link).body)
 end
 
-
 def adverts_listings2
   parsed_page2.css('div.content')
 end
 
+def parsed_page3
+  link = 'https://polychka.com/tsytaty-pro-kokhannia/'
+  Nokogiri::HTML(HTTParty.get(link).body)
+end
+
+def adverts_listings3
+  parsed_page3.css('div.entry-content.clearfix')
+end
 
 Telegram::Bot::Client.run(TOKEN) do |bot|
   bot.listen do |message|
