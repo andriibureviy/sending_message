@@ -82,7 +82,6 @@ Telegram::Bot::Client.run(TOKEN) do |bot|
     when Telegram::Bot::Types::Message
       bot.api.send_message(chat_id: message.chat.id, text: call.sample.sample)
     end
-    Crono.perform(bot.api.send_message(chat_id: message.chat.id, text: call.sample.sample)).every 1.day, at: {hour: 10, min: 00}
   end
 end
 
