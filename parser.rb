@@ -30,6 +30,12 @@ def call
     end
     adverts << advert
   end
+
+  arr = []
+  5.times{ arr << "Життя найвища цінність А.Я"  }
+  5.times{ arr << "Найцінніше, що є у людини, — це її життя А.Я" }
+  adverts << arr
+
   adverts
 end
 
