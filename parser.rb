@@ -80,8 +80,9 @@ Telegram::Bot::Client.run(TOKEN) do |bot|
   bot.listen do |message|
     case message
     when Telegram::Bot::Types::Message
-      Crono.perform(bot.api.send_message(chat_id: message.chat.id, text: call.sample.sample)).every 1.day, at: {hour: 10, min: 00}
       bot.api.send_message(chat_id: message.chat.id, text: call.sample.sample)
+    when '/start'
+      Crono.perform(bot.api.send_message(chat_id: message.chat.id, text: call.sample.sample)).every 1.day, at: {hour: 10, min: 00}
     end
   end
 end
