@@ -3,6 +3,7 @@ require 'nokogiri'
 require 'httparty'
 require 'pry'
 require 'telegram/bot'
+require 'crono'
 
 TOKEN = '5105333952:AAEkU-w1r3iNKpgH78qjuxF2Z0DQcqYf2A4'
 
@@ -81,6 +82,7 @@ Telegram::Bot::Client.run(TOKEN) do |bot|
     when Telegram::Bot::Types::Message
       bot.api.send_message(chat_id: message.chat.id, text: call.sample.sample)
     end
+    Crono.perform(bot.api.send_message(chat_id: message.chat.id, text: call.sample.sample)).every 1.day, at: {hour: 10, min: 00}
   end
 end
 
